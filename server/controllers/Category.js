@@ -1,4 +1,4 @@
-//* updated 
+//* updated
 const Category = require("../models/Category");
 const mongoose = require("mongoose");
 
@@ -63,12 +63,12 @@ exports.categoryPageDetails = async (req, res) => {
     const { categoryId } = req.body;
 
     // get course for specific category
-    const courseDetails = await Category.findById(categoryId)
-      .populate("course")
+    const selectedCategory = await Category.findById(categoryId)
+      .populate("courses")
       .exec();
 
     // validate
-    if (!courseDetails) {
+    if (!selectedCategory) {
       return res.status(400).json({
         success: false,
         message: "Category not found",
@@ -79,13 +79,13 @@ exports.categoryPageDetails = async (req, res) => {
     const differentCategories = await Category.find({
       _id: { $ne: categoryId },
     })
-      .populate("course")
+      .populate("courses")
       .exec();
 
     // get top selling course
     // ! write the query to get top selling course
     const allCategory = await Category.find().populate({
-      path: "course",
+      path: "courses",
       populate: {
         path: "instructor",
       },
@@ -100,7 +100,7 @@ exports.categoryPageDetails = async (req, res) => {
       success: true,
       message: "Category page details",
       data: {
-        courseDetails,
+        selectedCategory,
         differentCategories,
         topSellingCourse,
       },

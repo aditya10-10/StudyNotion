@@ -25,9 +25,7 @@ function Navbar() {
       setLoading(true);
       try {
         const res = await apiConnector("GET", categories.CATEGORIES_API);
-        console.log(res);
         setSubLinks(res.data.data);
-        console.log(user?.accountType);
       } catch (error) {
         console.log("Could not fetch Categories.", error);
       }
@@ -35,13 +33,7 @@ function Navbar() {
     })();
   }, []);
 
-  console.log("sub links", subLinks);
-
-  // {
-  //   subLinks?.map((subLink, index) => {
-  //     console.log(subLink.name);
-  //   });
-  // }
+  // console.log("sub links", subLinks)
 
   const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname);
@@ -80,25 +72,22 @@ function Navbar() {
                           <p className="text-center">Loading...</p>
                         ) : subLinks && subLinks.length ? (
                           <>
-                            {subLinks?.map((subLink, index) => (
-                              <Link
-                                to={`/catalog/${subLink.name
-                                  .split(" ")
-                                  .join("-")
-                                  .toLowerCase()}`}
-                                className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
-                                key={index}
-                              >
-                                <p>{subLink.name}</p>
-                              </Link>
-                            ))}
-                            {/* {subLinks
+                            {subLinks
                               ?.filter(
                                 (subLink) => subLink?.courses?.length > 0
                               )
                               ?.map((subLink, i) => (
-                               
-                              ))} */}
+                                <Link
+                                  to={`/catalog/${subLink.name
+                                    .split(" ")
+                                    .join("-")
+                                    .toLowerCase()}`}
+                                  className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                                  key={i}
+                                >
+                                  <p>{subLink.name}</p>
+                                </Link>
+                              ))}
                           </>
                         ) : (
                           <p className="text-center">No Courses Found</p>
